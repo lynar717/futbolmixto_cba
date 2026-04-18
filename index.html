@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fútbol Mixto Córdoba | La Comunidad Más Grande</title>
+    <title>Fútbol Mixto Córdoba</title>
     <meta name="description" content="Sumate a la comunidad de Fútbol Mixto más grande de Córdoba. Organización profesional, fotos asombrosas y torneos inclusivos.">
     <!-- Google Fonts: Inter / Bebas Neue / Montserrat -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -41,8 +41,8 @@
     <section class="hero" id="inicio">
         <div class="hero-overlay"></div>
         <div class="hero-content">
-            <h1 class="hero-title">SUMATE A LA COMUNIDAD DE <span class="text-gradient">FÚTBOL MIXTO</span> MÁS GRANDE DE CÓRDOBA</h1>
-            <p class="hero-subtitle">Viví la experiencia como un profesional. Amistosos, alta competencia, fotos y la mejor onda.</p>
+            <h1 class="hero-title"> ANOTATE A EL <span class="text-gradient">FÚTBOL MIXTO</span> MÁS GRANDE DE CÓRDOBA</h1>
+            <p class="hero-subtitle">Amistosos, torneos, fotos y la mejor onda.</p>
             <div class="hero-actions">
                 <a href="https://wa.me/5493517670845" target="_blank" class="btn-primary glow-btn">
                     <i class="fab fa-whatsapp"></i> Agendar Partido
@@ -59,31 +59,12 @@
     <section class="dias-juego highlight-section" id="dias-juego">
         <div class="container">
             <div class="section-heading text-center">
-                <h2>CÚANDO JUGAMOS</h2>
-                <p>Nuestra agenda semanal de amistosos y encuentros recreativos</p>
+                <h2>CÚANDO JUGAMOS <i id="admin-calendar-toggle" class="fas fa-cog" style="cursor:pointer; opacity:0.2; font-size: 1.2rem; margin-left: 10px;" title="Admin Mode"></i></h2>
+                <p>Nuestra agenda semanal de encuentros. Lugares limitados.</p>
             </div>
             
-            <div class="grid-dias">
-                <div class="dia-card" style="--delay: 1">
-                    <div class="dia-icon"><i class="fas fa-calendar-day"></i></div>
-                    <h3>LUNES</h3>
-                    <p>Cerrá el lunes con toda la energía. Fútbol 5 mixto.</p>
-                </div>
-                <div class="dia-card" style="--delay: 2">
-                    <div class="dia-icon"><i class="fas fa-calendar-check"></i></div>
-                    <h3>MARTES</h3>
-                    <p>Despejá la cabeza a mitad de semana y mostrá tu nivel.</p>
-                </div>
-                <div class="dia-card" style="--delay: 3">
-                    <div class="dia-icon"><i class="fas fa-calendar-alt"></i></div>
-                    <h3>JUEVES</h3>
-                    <p>La previa del finde se vive en la cancha.</p>
-                </div>
-                <div class="dia-card" style="--delay: 4">
-                    <div class="dia-icon"><i class="fas fa-calendar-plus"></i></div>
-                    <h3>VIERNES</h3>
-                    <p>¡El plato fuerte! Torneos relámpago y tercer tiempo.</p>
-                </div>
+            <div class="grid-dias" id="calendar-grid">
+                <!-- Se poblará dinámicamente desde javascript con la base de datos local -->
             </div>
         </div>
     </section>
