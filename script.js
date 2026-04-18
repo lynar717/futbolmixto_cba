@@ -156,20 +156,21 @@ document.addEventListener('DOMContentLoaded', () => {
         localStorage.setItem('futbolMixtoCalendar', JSON.stringify(calendarData));
     }
 
-    if (adminToggle) {
-        adminToggle.addEventListener('click', () => {
-            const pwd = prompt('Contraseña Admin (escribe "admin"):');
-            if (pwd === 'admin') {
-                isAdminMode = !isAdminMode;
-                adminToggle.style.color = isAdminMode ? 'var(--accent-purple)' : '';
-                adminToggle.style.opacity = isAdminMode ? '1' : '0.2';
-                alert(isAdminMode ? 'Modo EDICIÓN activado. Haz clic en los turnos para cambiar estado, o agrega horarios.' : 'Modo edición desactivado.');
-                renderCalendar();
-            } else if (pwd !== null) {
-                alert('Contraseña incorrecta');
+    window.toggleAdminMode = function() {
+        const pwd = prompt('Contraseña Admin (escribe "admin"):');
+        const icon = document.getElementById('admin-calendar-toggle');
+        if (pwd === 'admin') {
+            isAdminMode = !isAdminMode;
+            if(icon) {
+                icon.style.color = isAdminMode ? 'var(--accent-purple)' : '';
+                icon.style.opacity = isAdminMode ? '1' : '0.2';
             }
-        });
-    }
+            alert(isAdminMode ? 'Modo EDICIÓN activado. Haz clic en los turnos para cambiar estado, o agrega horarios.' : 'Modo edición desactivado.');
+            renderCalendar();
+        } else if (pwd !== null) {
+            alert('Contraseña incorrecta');
+        }
+    };
 
     // Inicializar
     renderCalendar();
