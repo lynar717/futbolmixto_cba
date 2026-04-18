@@ -156,21 +156,75 @@ document.addEventListener('DOMContentLoaded', () => {
         localStorage.setItem('futbolMixtoCalendar', JSON.stringify(calendarData));
     }
 
-    window.toggleAdminMode = function() {
-        const pwd = prompt('Contraseña Admin (escribe "admin"):');
-        const icon = document.getElementById('admin-calendar-toggle');
-        if (pwd === 'admin') {
-            isAdminMode = !isAdminMode;
-            if(icon) {
-                icon.style.color = isAdminMode ? 'var(--accent-purple)' : '';
-                icon.style.opacity = isAdminMode ? '1' : '0.2';
+    const adminModal = document.getElementById('admin-modal');
+    const pwdInput = document.getElementById('admin-password-input');
+    const eyeIcon = document.getElementById('toggle-pwd-visibility');
+    
+    window.toggleAdminMode = function () {
+        if(isAdminMode) {
+            isAdminMode = false;
+            updateAdminUI();
+            alert('Modo edición desactivado.');
+            return;
+        }
+        
+        if(adminModal) {
+            adminModal.classList.remove('hidden');
+            pwdInput.value = '';
+            pwdInput.type = 'password';
+            if(eyeIcon) {
+                eyeIcon.classList.remove('fa-eye-slash');
+                eyeIcon.classList.add('fa-eye');
             }
-            alert(isAdminMode ? 'Modo EDICIÓN activado. Haz clic en los turnos para cambiar estado, o agrega horarios.' : 'Modo edición desactivado.');
-            renderCalendar();
-        } else if (pwd !== null) {
-            alert('Contraseña incorrecta');
+            pwdInput.focus();
         }
     };
+
+    function updateAdminUI() {
+        const icon = document.getElementById('admin-calendar-toggle');
+        if (icon) {
+            icon.style.color = isAdminMode ? 'var(--accent-purple)' : '';
+            icon.style.opacity = isAdminMode ? '1' : '0.2';
+        }
+        renderCalendar();
+    }
+
+    const adminLoginBtn = document.getElementById('admin-login-btn');
+    if (adminLoginBtn) {
+        adminLoginBtn.addEventListener('click', () => {
+            if (pwdInput.value === 'cata18') {
+                isAdminMode = true;
+                updateAdminUI();
+                alert('Modo EDICIÓN activado.');
+                adminModal.classList.add('hidden');
+            } else {
+                alert('Contraseña incorrecta');
+                pwdInput.value = '';
+                pwdInput.focus();
+            }
+        });
+    }
+
+    const adminCancelBtn = document.getElementById('admin-cancel-btn');
+    if (adminCancelBtn) {
+        adminCancelBtn.addEventListener('click', () => {
+            adminModal.classList.add('hidden');
+        });
+    }
+
+    if(eyeIcon) {
+        eyeIcon.addEventListener('click', () => {
+            if(pwdInput.type === 'password') {
+                pwdInput.type = 'text';
+                eyeIcon.classList.remove('fa-eye');
+                eyeIcon.classList.add('fa-eye-slash');
+            } else {
+                pwdInput.type = 'password';
+                eyeIcon.classList.remove('fa-eye-slash');
+                eyeIcon.classList.add('fa-eye');
+            }
+        });
+    }
 
     // Inicializar
     renderCalendar();

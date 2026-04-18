@@ -59,7 +59,7 @@
     <section class="dias-juego highlight-section" id="dias-juego">
         <div class="container">
             <div class="section-heading text-center">
-                <h2>CÚANDO JUGAMOS <i id="admin-calendar-toggle" onclick="window.toggleAdminMode()" class="fas fa-cog" style="cursor:pointer; opacity:0.2; font-size: 1.2rem; margin-left: 10px;" title="Admin Mode"></i></h2>
+                <h2>CÚANDO JUGAMOS <i id="admin-calendar-toggle" class="fas fa-cog" style="cursor:pointer; opacity:0.2; font-size: 1.2rem; margin-left: 10px;" title="Admin Mode"></i></h2>
                 <p>Nuestra agenda semanal de encuentros. Lugares limitados.</p>
             </div>
             
@@ -231,6 +231,19 @@
             </div>
         </div>
     </footer>
+
+    <!-- Admin Login Modal -->
+    <div id="admin-modal" class="modal-overlay hidden">
+        <div class="modal-content box-glow">
+            <h3>Acceso de Administrador</h3>
+            <div class="form-group" style="position: relative; margin-bottom: 25px;">
+                <input type="password" id="admin-password-input" placeholder="Contraseña">
+                <i id="toggle-pwd-visibility" class="fas fa-eye" style="position: absolute; right: 15px; top: 15px; cursor: pointer; color: var(--text-muted);"></i>
+            </div>
+            <button id="admin-login-btn" class="btn-primary glow-btn submit-btn">Ingresar</button>
+            <button id="admin-cancel-btn" class="btn-primary-outline submit-btn" style="margin-top: 15px; padding: 15px 30px;">Cancelar</button>
+        </div>
+    </div>
 
     <!-- Scripts -->
     <script src="script.js"></script>
