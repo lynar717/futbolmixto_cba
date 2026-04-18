@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fútbol Mixto Córdoba | La Comunidad Más Grande</title>
+    <meta name="description" content="Sumate a la comunidad de Fútbol Mixto más grande de Córdoba. Organización profesional, fotos asombrosas y torneos inclusivos.">
+    <!-- Google Fonts: Inter / Bebas Neue / Montserrat -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <!-- FontAwesome para íconos -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Archivo principal de CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Header / Navbar -->
+    <header class="navbar">
+        <div class="logo">
+            <span class="logo-text">FÚTBOL MIXTO <span class="accent-glow">CBA</span></span>
+        </div>
+        <nav class="nav-links">
+            <a href="#dias-juego">Días</a>
+            <a href="#torneos">Logros</a>
+            <a href="#nosotros">Nosotros</a>
+            <a href="#contacto" class="btn-primary-outline">Únete</a>
+        </nav>
+        <button class="menu-toggle" id="mobile-menu" aria-label="Abrir menú">
+            <i class="fas fa-bars"></i>
+        </button>
+    </header>
+
+    <!-- Botón Whatsapp Flotante -->
+    <a href="https://wa.me/5493517670845" class="float-wa" target="_blank" aria-label="Contacto por WhatsApp">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+
+    <!-- Hero Section -->
+    <section class="hero" id="inicio">
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <h1 class="hero-title">SUMATE A LA COMUNIDAD DE <span class="text-gradient">FÚTBOL MIXTO</span> MÁS GRANDE DE CÓRDOBA</h1>
+            <p class="hero-subtitle">Viví la experiencia como un profesional. Amistosos, alta competencia, fotos y la mejor onda.</p>
+            <div class="hero-actions">
+                <a href="https://wa.me/5493517670845" target="_blank" class="btn-primary glow-btn">
+                    <i class="fab fa-whatsapp"></i> Agendar Partido
+                </a>
+            </div>
+        </div>
+        <!-- Scroll indicator -->
+        <div class="scroll-down">
+            <a href="#dias-juego"><i class="fas fa-chevron-down"></i></a>
+        </div>
+    </section>
+
+    <!-- Días de Juego Section -->
+    <section class="dias-juego highlight-section" id="dias-juego">
+        <div class="container">
+            <div class="section-heading text-center">
+                <h2>CÚANDO JUGAMOS</h2>
+                <p>Nuestra agenda semanal de amistosos y encuentros recreativos</p>
+            </div>
+            
+            <div class="grid-dias">
+                <div class="dia-card" style="--delay: 1">
+                    <div class="dia-icon"><i class="fas fa-calendar-day"></i></div>
+                    <h3>LUNES</h3>
+                    <p>Cerrá el lunes con toda la energía. Fútbol 5 mixto.</p>
+                </div>
+                <div class="dia-card" style="--delay: 2">
+                    <div class="dia-icon"><i class="fas fa-calendar-check"></i></div>
+                    <h3>MARTES</h3>
+                    <p>Despejá la cabeza a mitad de semana y mostrá tu nivel.</p>
+                </div>
+                <div class="dia-card" style="--delay: 3">
+                    <div class="dia-icon"><i class="fas fa-calendar-alt"></i></div>
+                    <h3>JUEVES</h3>
+                    <p>La previa del finde se vive en la cancha.</p>
+                </div>
+                <div class="dia-card" style="--delay: 4">
+                    <div class="dia-icon"><i class="fas fa-calendar-plus"></i></div>
+                    <h3>VIERNES</h3>
+                    <p>¡El plato fuerte! Torneos relámpago y tercer tiempo.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Torneos y Logros Section -->
+    <section class="torneos darker-section" id="torneos">
+        <div class="container">
+            <div class="section-heading text-center">
+                <h2>SALÓN DE LA FAMA</h2>
+                <p>Campeones de nuestras ediciones de competencias.</p>
+            </div>
+
+            <div class="stories-container">
+                <div class="story-item">
+                    <div class="story-ring gold-ring">
+                        <img src="assets/img/team_gold_1776541993629.png" alt="Equipo Campeón Oro" class="story-img">
+                    </div>
+                    <h4>FINAL ORO</h4>
+                    <span>Apertura '24</span>
+                </div>
+
+                <div class="story-item">
+                    <div class="story-ring silver-ring">
+                        <img src="assets/img/team_silver_1776542007981.png" alt="Equipo Campeón Plata" class="story-img">
+                    </div>
+                    <h4>FINAL PLATA</h4>
+                    <span>Apertura '24</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Propuesta de Valor Section -->
+    <section class="propuesta-valor highlight-section" id="nosotros">
+        <div class="container">
+            <div class="section-heading text-center">
+                <h2>NUESTRA PROPUESTA</h2>
+                <p>Club exclusivo, abierto para todos en Córdoba.</p>
+            </div>
+
+            <div class="features-grid">
+                <div class="feature-box">
+                    <i class="fas fa-venus-mars feature-icon"></i>
+                    <h3>Mix de Géneros</h3>
+                    <p>Ambiente equitativo e inclusivo. Fútbol mixto con respeto y sana competencia.</p>
+                </div>
+                <div class="feature-box">
+                    <i class="fas fa-clipboard-check feature-icon"></i>
+                    <h3>Organización Profesional</h3>
+                    <p>Canchas reservadas, chalecos, pelotas premium y planillas de estadísticas.</p>
+                </div>
+                <div class="feature-box">
+                    <i class="fas fa-camera feature-icon"></i>
+                    <h3>Fotos & Videos</h3>
+                    <p>Fotógrafos en cada partido. Llevate tus jugadas grabadas y fotos estilo profesional.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Instagram Integration Mock -->
+    <section class="instagram-feed darker-section" id="social">
+        <div class="container">
+            <div class="ig-header">
+                <div class="ig-profile">
+                    <div class="ig-avatar">
+                        <i class="fab fa-instagram"></i>
+                    </div>
+                    <div class="ig-info">
+                        <h3>@futbolmixtocordoba</h3>
+                        <div class="ig-stats">
+                            <span><strong>141</strong> publicaciones</span>
+                            <span><strong>14.5k</strong> seguidores</span>
+                        </div>
+                    </div>
+                </div>
+                <a href="https://instagram.com/futbolmixtocordoba" target="_blank" class="btn-ig-outline">
+                    Seguir
+                </a>
+            </div>
+
+            <div class="ig-grid">
+                <a href="https://instagram.com/futbolmixtocordoba" target="_blank" class="ig-post">
+                    <img src="assets/img/insta_1_1776542090444.png" alt="Partidos Fútbol">
+                    <div class="ig-overlay"><i class="fas fa-heart"></i> 1.2k</div>
+                </a>
+                <a href="https://instagram.com/futbolmixtocordoba" target="_blank" class="ig-post">
+                    <img src="assets/img/insta_2_1776542139922.png" alt="Festejo Goles">
+                    <div class="ig-overlay"><i class="fas fa-heart"></i> 856</div>
+                </a>
+                <a href="https://instagram.com/futbolmixtocordoba" target="_blank" class="ig-post">
+                    <img src="assets/img/insta_3_1776542177125.png" alt="Torneo Relámpago">
+                    <div class="ig-overlay"><i class="fas fa-heart"></i> 2.1k</div>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contacto / Lista de Espera -->
+    <section class="contacto highlight-section" id="contacto">
+        <div class="container contact-container">
+            <div class="contact-form-wrapper box-glow">
+                <div class="section-heading">
+                    <h2>ANOTATE AHORA</h2>
+                    <p>Asegurá tu lugar en la lista de espera para los próximos amistosos.</p>
+                </div>
+                
+                <form id="waitlist-form" class="custom-form">
+                    <div class="form-group">
+                        <label for="name">Nombre y Apellido</label>
+                        <input type="text" id="name" required placeholder="Ej: Lionel Martínez">
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="phone">Teléfono (WhatsApp)</label>
+                            <input type="tel" id="phone" required placeholder="351 000 0000">
+                        </div>
+                        <div class="form-group">
+                            <label for="pos">Posición (Opcional)</label>
+                            <input type="text" id="pos" placeholder="Ej: Portero, Defensa...">
+                        </div>
+                    </div>
+                    <button type="submit" class="btn-primary glow-btn submit-btn">
+                        Unirme a la lista
+                    </button>
+                    <div id="form-msg" class="hidden form-message">¡Gracias! Nos pondremos en contacto pronto.</div>
+                </form>
+            </div>
+
+            <div class="contact-info-wrapper">
+                <h3>CONTACTO DIRECTO</h3>
+                <p>Si tienes alguna duda o querés anotar a tu equipo completo, hablanos directamente:</p>
+                
+                <div class="contact-details">
+                    <a href="https://wa.me/5493517670845" target="_blank" class="contact-item">
+                        <div class="c-icon"><i class="fab fa-whatsapp"></i></div>
+                        <div class="c-text">
+                            <span>Escribinos al</span>
+                            <strong>+54 9 351 767 0845</strong>
+                        </div>
+                    </a>
+                    
+                    <a href="https://instagram.com/futbolmixtocordoba" target="_blank" class="contact-item">
+                        <div class="c-icon"><i class="fab fa-instagram"></i></div>
+                        <div class="c-text">
+                            <span>Instagram</span>
+                            <strong>@futbolmixtocordoba</strong>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container footer-content">
+            <div class="footer-brand">
+                <h2>FÚTBOL MIXTO <span class="accent-text">CBA</span></h2>
+                <p>Amistoso, inclusivo pero competitivo.</p>
+            </div>
+            <div class="footer-copy">
+                &copy; 2026 Fútbol Mixto Córdoba. Todos los derechos reservados.
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="script.js"></script>
+</body>
+</html>
