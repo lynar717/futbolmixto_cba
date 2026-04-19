@@ -72,16 +72,20 @@ img {
 
 /* typography utilities */
 .text-gradient {
-    background: var(--gradient-primary);
+    background-image: var(--gradient-primary);
     -webkit-background-clip: text;
+    background-clip: text;
     -webkit-text-fill-color: transparent;
+    color: transparent;
     display: inline-block;
 }
 .accent-text { color: var(--accent-purple); }
 .accent-glow {
-    background: var(--gradient-primary);
+    background-image: var(--gradient-primary);
     -webkit-background-clip: text;
+    background-clip: text;
     -webkit-text-fill-color: transparent;
+    color: transparent;
     display: inline-block;
     filter: drop-shadow(0 0 10px var(--accent-blue-glow));
 }
