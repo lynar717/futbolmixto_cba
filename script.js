@@ -159,20 +159,20 @@ document.addEventListener('DOMContentLoaded', () => {
     const adminModal = document.getElementById('admin-modal');
     const pwdInput = document.getElementById('admin-password-input');
     const eyeIcon = document.getElementById('toggle-pwd-visibility');
-    
+
     window.toggleAdminMode = function () {
-        if(isAdminMode) {
+        if (isAdminMode) {
             isAdminMode = false;
             updateAdminUI();
             alert('Modo edición desactivado.');
             return;
         }
-        
-        if(adminModal) {
+
+        if (adminModal) {
             adminModal.classList.remove('hidden');
             pwdInput.value = '';
             pwdInput.type = 'password';
-            if(eyeIcon) {
+            if (eyeIcon) {
                 eyeIcon.classList.remove('fa-eye-slash');
                 eyeIcon.classList.add('fa-eye');
             }
@@ -212,9 +212,9 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    if(eyeIcon) {
+    if (eyeIcon) {
         eyeIcon.addEventListener('click', () => {
-            if(pwdInput.type === 'password') {
+            if (pwdInput.type === 'password') {
                 pwdInput.type = 'text';
                 eyeIcon.classList.remove('fa-eye');
                 eyeIcon.classList.add('fa-eye-slash');

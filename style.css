@@ -79,7 +79,7 @@ img {
 }
 .accent-text { color: var(--accent-purple); }
 .accent-glow {
-    color: var(--text-main);
+    color: var(--gradient-primary);
     text-shadow: 0 0 10px var(--accent-blue-glow);
 }
 
