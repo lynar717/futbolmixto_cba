@@ -116,8 +116,16 @@ document.addEventListener('DOMContentLoaded', () => {
             dayData.matches.forEach((match, matchIndex) => {
                 const statusClass = match.full ? 'status-full' : 'status-open';
                 const statusText = match.full ? 'COMPLETO' : 'DISPONIBLE';
-                const cursorStyle = isAdminMode ? 'cursor:pointer;' : '';
-                const clickAction = isAdminMode ? `onclick="toggleMatchStatus(${dayIndex}, ${matchIndex})"` : '';
+                let cursorStyle = '';
+                let clickAction = '';
+                
+                if (isAdminMode) {
+                    cursorStyle = 'cursor:pointer;';
+                    clickAction = `onclick="toggleMatchStatus(${dayIndex}, ${matchIndex})"`;
+                } else if (!match.full) {
+                    cursorStyle = 'cursor:pointer;';
+                    clickAction = `onclick="window.bookMatch('${dayData.day}', '${match.time}')"`;
+                }
 
                 let adminControlsMatch = '';
                 if (isAdminMode) {
@@ -180,6 +188,24 @@ document.addEventListener('DOMContentLoaded', () => {
             calendarGrid.appendChild(addDayCard);
         }
     }
+
+    window.bookMatch = function(dayDataDay, matchTime) {
+        if (isAdminMode) return;
+        const targetString = `${dayDataDay} ${matchTime} hs`;
+        if (confirm(`Elegiste ${targetString}. ¿Querés confirmar y autocompletar este horario en el formulario para anotarte?`)) {
+            const daytimeInput = document.getElementById('daytime');
+            if (daytimeInput) {
+                daytimeInput.value = targetString;
+            }
+            const contactoSection = document.getElementById('contacto');
+            if (contactoSection) {
+                contactoSection.scrollIntoView({ behavior: 'smooth' });
+                setTimeout(() => {
+                    if (daytimeInput) daytimeInput.focus();
+                }, 800);
+            }
+        }
+    };
 
     window.toggleMatchStatus = function (dayIndex, matchIndex) {
         if (!isAdminMode) return;
@@ -395,8 +421,11 @@ document.addEventListener('DOMContentLoaded', () => {
         const telefono = prompt('Ingresá su teléfono (opcional):') || '-';
         const daytime = prompt('Ingresá Día y Hora que quiere jugar (ej: Jueves 21)');
         const pos = prompt('Ingresá su posición (opcional):') || '-';
+        const customDate = prompt('Ingrese la Fecha de Registro (ej: 25/10/2026). Deje en blanco para usar la fecha de hoy:');
         
-        waitlistData.push({ nombre, telefono, pos, daytime: daytime || 'Sin especificar', date: new Date().toLocaleDateString() + ' (Manual)' });
+        const finalDate = customDate ? customDate + ' (Manual)' : new Date().toLocaleDateString() + ' (Manual)';
+        
+        waitlistData.push({ nombre, telefono, pos, daytime: daytime || 'Sin especificar', date: finalDate });
         localStorage.setItem('futbolMixtoWaitlist', JSON.stringify(waitlistData));
         window.renderWaitlist();
     };
