@@ -444,24 +444,82 @@ document.addEventListener('DOMContentLoaded', () => {
         window.renderWaitlist();
     };
 
-    window.downloadWaitlistCSV = function() {
+    window.downloadWaitlistCSV = async function() {
         if (waitlistData.length === 0) {
             alert('La lista está vacía.');
             return;
         }
-        let csvContent = "Nombre;Telefono;DiaHora;Posicion;Fecha\n";
+
+        if (typeof ExcelJS === 'undefined') {
+            alert('La librería de Excel aún se está cargando. Por favor, intentá de nuevo en unos segundos.');
+            return;
+        }
+
+        const workbook = new ExcelJS.Workbook();
+        const worksheet = workbook.addWorksheet('Inscriptos');
+
+        // Configurar columnas y anchos para que se vea simétrico
+        worksheet.columns = [
+            { header: 'Jugador/a', key: 'nombre', width: 25 },
+            { header: 'WhatsApp', key: 'telefono', width: 22 },
+            { header: 'Turno Deseado', key: 'daytime', width: 30 },
+            { header: 'Posición', key: 'pos', width: 20 },
+            { header: 'Fecha de Alta', key: 'date', width: 25 }
+        ];
+
+        // Diseño del Encabezado (Color Violeta, Letra Blanca, Negrita, Centrado)
+        const headerRow = worksheet.getRow(1);
+        headerRow.font = { bold: true, color: { argb: 'FFFFFFFF' }, size: 12 };
+        headerRow.fill = {
+            type: 'pattern',
+            pattern: 'solid',
+            fgColor: { argb: 'FF9D4EDD' }
+        };
+        headerRow.alignment = { vertical: 'middle', horizontal: 'center' };
+
+        // Insertar los datos reales
         waitlistData.forEach(row => {
-            const rowStr = `"${row.nombre}";"${row.telefono}";"${row.daytime || ''}";"${row.pos}";"${row.date}"`;
-            csvContent += rowStr + "\n";
+            worksheet.addRow({
+                nombre: row.nombre || 'Desconocido',
+                telefono: row.telefono || '-',
+                daytime: row.daytime || 'Sin especificar',
+                pos: row.pos || '-',
+                date: row.date || '-'
+            });
         });
-        const blob = new Blob(["\uFEFF" + csvContent], { type: 'text/csv;charset=utf-8;' });
-        const url = URL.createObjectURL(blob);
-        const link = document.createElement("a");
-        link.setAttribute("href", url);
-        link.setAttribute("download", "lista_espera_futbol_mixto.csv");
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
+
+        // Aplicar estilos a todas las celdas de datos
+        worksheet.eachRow((row, rowNumber) => {
+            // Saltamos la fila 1 porque es el encabezado que ya diseñamos
+            if (rowNumber > 1) {
+                row.alignment = { vertical: 'middle', horizontal: 'center' };
+                row.eachCell({ includeEmpty: true }, (cell) => {
+                    cell.border = {
+                        top: { style: 'thin', color: { argb: 'FFDDDDDD' } },
+                        left: { style: 'thin', color: { argb: 'FFDDDDDD' } },
+                        bottom: { style: 'thin', color: { argb: 'FFDDDDDD' } },
+                        right: { style: 'thin', color: { argb: 'FFDDDDDD' } }
+                    };
+                });
+            }
+        });
+
+        // Bajar el archivo como .xlsx puro
+        try {
+            const buffer = await workbook.xlsx.writeBuffer();
+            const blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement("a");
+            link.href = url;
+            link.download = "Lista_Inscriptos_Futbol_Mixto.xlsx";
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(url);
+        } catch(e) {
+            console.error('Error generando archivo Excel:', e);
+            alert('Hubo un error al generar el archivo. Revisá la consola.');
+        }
     };
 
     if (form) {
