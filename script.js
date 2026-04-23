@@ -112,13 +112,32 @@ document.addEventListener('DOMContentLoaded', () => {
                 const cursorStyle = isAdminMode ? 'cursor:pointer;' : '';
                 const clickAction = isAdminMode ? `onclick="toggleMatchStatus(${dayIndex}, ${matchIndex})"` : '';
 
+                let adminControlsMatch = '';
+                if (isAdminMode) {
+                    adminControlsMatch = `
+                        <div style="margin-left:auto; display:flex; gap:10px;">
+                            <i class="fas fa-edit" title="Editar Horario" style="color:#aaa;" onclick="event.stopPropagation(); window.editMatchSlot(${dayIndex}, ${matchIndex})"></i>
+                            <i class="fas fa-trash" title="Eliminar Horario" style="color:#f44336;" onclick="event.stopPropagation(); window.removeMatchSlot(${dayIndex}, ${matchIndex})"></i>
+                        </div>
+                    `;
+                }
+
                 matchesHtml += `
-                    <div class="match-slot ${statusClass}" style="${cursorStyle}" ${clickAction}>
+                    <div class="match-slot ${statusClass}" style="${cursorStyle} ${isAdminMode ? 'display:flex; align-items:center;' : ''}" ${clickAction}>
                         <span class="match-time"><i class="far fa-clock"></i> ${match.time} hs</span>
-                        <span class="match-status">${statusText}</span>
+                        <span class="match-status" ${isAdminMode ? 'style="margin-left:10px;"' : ''}>${statusText}</span>
+                        ${adminControlsMatch}
                     </div>
                 `;
             });
+
+            let adminControlsDay = isAdminMode ? `
+                <div style="display:flex; justify-content:center; gap:5px; margin-top:15px; flex-wrap:wrap;">
+                    <button class="btn-primary-outline btn-sm" onclick="window.editDay(${dayIndex})"><i class="fas fa-edit"></i> Editar Día</button>
+                    <button class="btn-primary-outline btn-sm" onclick="window.removeDay(${dayIndex})" style="color:#f44336; border-color:#f44336;"><i class="fas fa-trash"></i> Eliminar</button>
+                    <button class="btn-primary-outline btn-sm" onclick="window.addMatchSlot(${dayIndex})"><i class="fas fa-plus"></i> Horario</button>
+                </div>
+            ` : '';
 
             card.innerHTML = `
                 <div class="dia-icon"><i class="fas ${dayData.icon}"></i></div>
@@ -127,11 +146,32 @@ document.addEventListener('DOMContentLoaded', () => {
                 <div class="matches-container">
                     ${matchesHtml}
                 </div>
-                ${isAdminMode ? `<button class="btn-primary-outline btn-sm" onclick="addMatchSlot(${dayIndex})">+ Agregar Horario</button>` : ''}
+                ${adminControlsDay}
             `;
             calendarGrid.appendChild(card);
             observer.observe(card);
         });
+
+        if (isAdminMode) {
+            const addDayCard = document.createElement('div');
+            // Adding 'visible' immediately so it doesn't need to be scrolled to appear in admin mode
+            addDayCard.className = 'dia-card visible';
+            addDayCard.style.display = 'flex';
+            addDayCard.style.alignItems = 'center';
+            addDayCard.style.justifyContent = 'center';
+            addDayCard.style.cursor = 'pointer';
+            addDayCard.style.border = '2px dashed var(--accent-purple)';
+            addDayCard.style.minHeight = '250px';
+            addDayCard.style.backgroundColor = 'rgba(157, 78, 221, 0.05)';
+            addDayCard.onclick = window.addDay;
+            addDayCard.innerHTML = `
+                <div style="text-align:center;">
+                    <i class="fas fa-plus-circle" style="color:var(--accent-purple); font-size:3rem; margin-bottom:15px;"></i>
+                    <h3 style="color:var(--accent-purple); font-size:1.5rem;">Agregar Día</h3>
+                </div>
+            `;
+            calendarGrid.appendChild(addDayCard);
+        }
     }
 
     window.toggleMatchStatus = function (dayIndex, matchIndex) {
@@ -147,6 +187,66 @@ document.addEventListener('DOMContentLoaded', () => {
         if (time) {
             calendarData[dayIndex].matches.push({ time: time, full: false });
             calendarData[dayIndex].matches.sort((a, b) => a.time.localeCompare(b.time));
+            saveCalendarData();
+            renderCalendar();
+        }
+    };
+
+    window.editMatchSlot = function (dayIndex, matchIndex) {
+        if (!isAdminMode) return;
+        const time = prompt('Modificar horario (ej: 18:00):', calendarData[dayIndex].matches[matchIndex].time);
+        if (time) {
+            calendarData[dayIndex].matches[matchIndex].time = time;
+            calendarData[dayIndex].matches.sort((a, b) => a.time.localeCompare(b.time));
+            saveCalendarData();
+            renderCalendar();
+        }
+    };
+
+    window.removeMatchSlot = function (dayIndex, matchIndex) {
+        if (!isAdminMode) return;
+        if (confirm(\`¿Eliminar horario de \${calendarData[dayIndex].matches[matchIndex].time} hs?\`)) {
+            calendarData[dayIndex].matches.splice(matchIndex, 1);
+            saveCalendarData();
+            renderCalendar();
+        }
+    };
+
+    window.addDay = function () {
+        if (!isAdminMode) return;
+        const day = prompt('Ingrese el nombre del día (ej: MIÉRCOLES):');
+        if (!day) return;
+        const desc = prompt('Ingrese una breve descripción para el día:');
+        calendarData.push({
+            day: day.toUpperCase(),
+            icon: 'fa-calendar-day',
+            desc: desc || '',
+            matches: []
+        });
+        saveCalendarData();
+        renderCalendar();
+    };
+
+    window.editDay = function (dayIndex) {
+        if (!isAdminMode) return;
+        const day = prompt('Modificar nombre del día:', calendarData[dayIndex].day);
+        if (day !== null && day.trim() !== '') {
+            calendarData[dayIndex].day = day.toUpperCase();
+        }
+        
+        const desc = prompt('Modificar descripción:', calendarData[dayIndex].desc);
+        if (desc !== null) {
+            calendarData[dayIndex].desc = desc;
+        }
+        
+        saveCalendarData();
+        renderCalendar();
+    };
+
+    window.removeDay = function (dayIndex) {
+        if (!isAdminMode) return;
+        if (confirm(\`¿Estás seguro de eliminar el día \${calendarData[dayIndex].day} por completo?\`)) {
+            calendarData.splice(dayIndex, 1);
             saveCalendarData();
             renderCalendar();
         }
