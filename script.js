@@ -444,82 +444,77 @@ document.addEventListener('DOMContentLoaded', () => {
         window.renderWaitlist();
     };
 
-    window.downloadWaitlistCSV = async function() {
+    window.downloadWaitlistCSV = function() {
         if (waitlistData.length === 0) {
             alert('La lista está vacía.');
             return;
         }
 
-        if (typeof ExcelJS === 'undefined') {
-            alert('La librería de Excel aún se está cargando. Por favor, intentá de nuevo en unos segundos.');
-            return;
-        }
+        let tableHtml = `
+            <html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40">
+            <head>
+                <meta charset="utf-8">
+                <!--[if gte mso 9]>
+                <xml>
+                  <x:ExcelWorkbook>
+                    <x:ExcelWorksheets>
+                      <x:ExcelWorksheet>
+                        <x:Name>Lista de Inscriptos</x:Name>
+                        <x:WorksheetOptions>
+                          <x:DisplayGridlines/>
+                        </x:WorksheetOptions>
+                      </x:ExcelWorksheet>
+                    </x:ExcelWorksheets>
+                  </x:ExcelWorkbook>
+                </xml>
+                <![endif]-->
+                <style>
+                    .header { background-color: #9D4EDD; color: #FFFFFF; font-weight: bold; text-align: center; border: 1pt solid #000000; height: 35px; vertical-align: middle;}
+                    .cell { text-align: center; border: 1pt solid #DDDDDD; vertical-align: middle; height: 25px;}
+                </style>
+            </head>
+            <body>
+                <table>
+                    <thead>
+                        <tr>
+                            <th class="header" style="width:150pt;">Jugador/a</th>
+                            <th class="header" style="width:120pt;">WhatsApp</th>
+                            <th class="header" style="width:180pt;">Turno Deseado</th>
+                            <th class="header" style="width:120pt;">Posición</th>
+                            <th class="header" style="width:150pt;">Fecha de Alta</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+        `;
 
-        const workbook = new ExcelJS.Workbook();
-        const worksheet = workbook.addWorksheet('Inscriptos');
-
-        // Configurar columnas y anchos para que se vea simétrico
-        worksheet.columns = [
-            { header: 'Jugador/a', key: 'nombre', width: 25 },
-            { header: 'WhatsApp', key: 'telefono', width: 22 },
-            { header: 'Turno Deseado', key: 'daytime', width: 30 },
-            { header: 'Posición', key: 'pos', width: 20 },
-            { header: 'Fecha de Alta', key: 'date', width: 25 }
-        ];
-
-        // Diseño del Encabezado (Color Violeta, Letra Blanca, Negrita, Centrado)
-        const headerRow = worksheet.getRow(1);
-        headerRow.font = { bold: true, color: { argb: 'FFFFFFFF' }, size: 12 };
-        headerRow.fill = {
-            type: 'pattern',
-            pattern: 'solid',
-            fgColor: { argb: 'FF9D4EDD' }
-        };
-        headerRow.alignment = { vertical: 'middle', horizontal: 'center' };
-
-        // Insertar los datos reales
         waitlistData.forEach(row => {
-            worksheet.addRow({
-                nombre: row.nombre || 'Desconocido',
-                telefono: row.telefono || '-',
-                daytime: row.daytime || 'Sin especificar',
-                pos: row.pos || '-',
-                date: row.date || '-'
-            });
+            tableHtml += `
+                        <tr>
+                            <td class="cell">${row.nombre || 'Desconocido'}</td>
+                            <td class="cell" style="mso-number-format:'\@';">${row.telefono || '-'}</td>
+                            <td class="cell">${row.daytime || 'Sin especificar'}</td>
+                            <td class="cell">${row.pos || '-'}</td>
+                            <td class="cell">${row.date || '-'}</td>
+                        </tr>
+            `;
         });
 
-        // Aplicar estilos a todas las celdas de datos
-        worksheet.eachRow((row, rowNumber) => {
-            // Saltamos la fila 1 porque es el encabezado que ya diseñamos
-            if (rowNumber > 1) {
-                row.alignment = { vertical: 'middle', horizontal: 'center' };
-                row.eachCell({ includeEmpty: true }, (cell) => {
-                    cell.border = {
-                        top: { style: 'thin', color: { argb: 'FFDDDDDD' } },
-                        left: { style: 'thin', color: { argb: 'FFDDDDDD' } },
-                        bottom: { style: 'thin', color: { argb: 'FFDDDDDD' } },
-                        right: { style: 'thin', color: { argb: 'FFDDDDDD' } }
-                    };
-                });
-            }
-        });
+        tableHtml += `
+                    </tbody>
+                </table>
+            </body>
+            </html>
+        `;
 
-        // Bajar el archivo como .xlsx puro
-        try {
-            const buffer = await workbook.xlsx.writeBuffer();
-            const blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
-            const url = URL.createObjectURL(blob);
-            const link = document.createElement("a");
-            link.href = url;
-            link.download = "Lista_Inscriptos_Futbol_Mixto.xlsx";
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-            URL.revokeObjectURL(url);
-        } catch(e) {
-            console.error('Error generando archivo Excel:', e);
-            alert('Hubo un error al generar el archivo. Revisá la consola.');
-        }
+        const blob = new Blob([tableHtml], { type: 'application/vnd.ms-excel;charset=utf-8' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = "Lista_Inscriptos_Futbol_Mixto.xls";
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
     };
 
     if (form) {
