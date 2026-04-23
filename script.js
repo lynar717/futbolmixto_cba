@@ -481,7 +481,9 @@ document.addEventListener('DOMContentLoaded', () => {
                             <th class="header" style="width:120pt;">WhatsApp</th>
                             <th class="header" style="width:180pt;">Turno Deseado</th>
                             <th class="header" style="width:120pt;">Posición</th>
-                            <th class="header" style="width:150pt;">Fecha de Alta</th>
+                            <th class="header" style="width:120pt;">Inscripción</th>
+                            <th class="header" style="width:100pt; background-color: #4cc9f0;">Cancha</th>
+                            <th class="header" style="width:100pt; background-color: #4cc9f0;">Equipo</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -495,6 +497,8 @@ document.addEventListener('DOMContentLoaded', () => {
                             <td class="cell">${row.daytime || 'Sin especificar'}</td>
                             <td class="cell">${row.pos || '-'}</td>
                             <td class="cell">${row.date || '-'}</td>
+                            <td class="cell"></td>
+                            <td class="cell"></td>
                         </tr>
             `;
         });
