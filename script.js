@@ -286,7 +286,16 @@ document.addEventListener('DOMContentLoaded', () => {
             icon.style.color = isAdminMode ? 'var(--accent-purple)' : '';
             icon.style.opacity = isAdminMode ? '1' : '0.2';
         }
+        
+        const waitlistDiv = document.getElementById('admin-waitlist-container');
+        if (waitlistDiv) {
+            waitlistDiv.style.display = isAdminMode ? 'block' : 'none';
+        }
+
         renderCalendar();
+        if (isAdminMode && window.renderWaitlist) {
+            window.renderWaitlist();
+        }
     }
 
     const adminLoginBtn = document.getElementById('admin-login-btn');
@@ -330,22 +339,108 @@ document.addEventListener('DOMContentLoaded', () => {
     renderCalendar();
 
     /* ==========================================================================
-       Form Submission Simulation
+       Waitlist / Form Submission Logic
        ========================================================================== */
     const form = document.getElementById('waitlist-form');
     const formMsg = document.getElementById('form-msg');
     const submitBtn = form.querySelector('.submit-btn');
 
+    let waitlistData = JSON.parse(localStorage.getItem('futbolMixtoWaitlist')) || [];
+
+    window.renderWaitlist = function() {
+        const listDiv = document.getElementById('admin-waitlist-list');
+        if (!listDiv) return;
+        
+        if (waitlistData.length === 0) {
+            listDiv.innerHTML = '<p style="color:var(--text-muted);">La lista está vacía.</p>';
+            return;
+        }
+
+        let html = '<ul style="list-style:none; padding:0; margin:0; text-align:left;">';
+        waitlistData.forEach((user, index) => {
+            html += `
+                <li style="padding:15px; border-bottom:1px solid rgba(255,255,255,0.1); display:flex; justify-content:space-between; align-items:center;">
+                    <div>
+                        <strong style="font-size:1.1rem; color: #fff;">${user.nombre}</strong> <span style="color:var(--text-muted); font-size:0.8rem; margin-left:5px;">(${user.date})</span><br>
+                        <i class="fab fa-whatsapp" style="color:#25D366; margin-right:5px; margin-top:5px;"></i> ${user.telefono} <br>
+                        ${user.pos ? `<span style="font-size:0.9rem; color:var(--accent-purple); display:inline-block; margin-top:3px;"><i class="fas fa-shoe-prints"></i> ${user.pos}</span>` : ''}
+                    </div>
+                    <button class="btn-primary-outline btn-sm" style="color:#f44336; border-color:#f44336; padding:8px 12px; margin-left:10px;" onclick="window.removeWaitlistUser(${index})" title="Eliminar"><i class="fas fa-trash"></i></button>
+                </li>
+            `;
+        });
+        html += '</ul>';
+        listDiv.innerHTML = html;
+    };
+
+    window.addManualUser = function() {
+        if (!isAdminMode) return;
+        const nombre = prompt('Ingresá el nombre y apellido del jugador:');
+        if (!nombre) return;
+        const telefono = prompt('Ingresá su teléfono (opcional):') || '-';
+        const pos = prompt('Ingresá su posición (opcional):') || '-';
+        
+        waitlistData.push({ nombre, telefono, pos, date: new Date().toLocaleDateString() + ' (Manual)' });
+        localStorage.setItem('futbolMixtoWaitlist', JSON.stringify(waitlistData));
+        window.renderWaitlist();
+    };
+
+    window.removeWaitlistUser = function(index) {
+        if (!confirm('¿Eliminar a este jugador de la lista?')) return;
+        waitlistData.splice(index, 1);
+        localStorage.setItem('futbolMixtoWaitlist', JSON.stringify(waitlistData));
+        window.renderWaitlist();
+    };
+
+    window.clearWaitlist = function() {
+        if (!confirm('¿Seguro que querés vaciar toda la lista? Esto no se puede deshacer.')) return;
+        waitlistData = [];
+        localStorage.setItem('futbolMixtoWaitlist', JSON.stringify(waitlistData));
+        window.renderWaitlist();
+    };
+
+    window.downloadWaitlistCSV = function() {
+        if (waitlistData.length === 0) {
+            alert('La lista está vacía.');
+            return;
+        }
+        let csvContent = "data:text/csv;charset=utf-8,";
+        csvContent += "Nombre,Telefono,Posicion,Fecha\n";
+        waitlistData.forEach(row => {
+            const rowStr = `"${row.nombre}","${row.telefono}","${row.pos}","${row.date}"`;
+            csvContent += rowStr + "\n";
+        });
+        const encodedUri = encodeURI(csvContent);
+        const link = document.createElement("a");
+        link.setAttribute("href", encodedUri);
+        link.setAttribute("download", "lista_espera_futbol_mixto.csv");
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    };
+
     if (form) {
         form.addEventListener('submit', (e) => {
             e.preventDefault();
 
+            const nombre = document.getElementById('name').value;
+            const telefono = document.getElementById('phone').value;
+            const pos = document.getElementById('pos').value;
+
             // Basic simulation of loading text
             const btnOriginalText = submitBtn.innerHTML;
-            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Enviando...';
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Guardando...';
             submitBtn.disabled = true;
 
             setTimeout(() => {
+                // Guardar en LocalStorage
+                waitlistData.push({ nombre, telefono, pos, date: new Date().toLocaleDateString() });
+                localStorage.setItem('futbolMixtoWaitlist', JSON.stringify(waitlistData));
+                
+                if (isAdminMode && window.renderWaitlist) {
+                    window.renderWaitlist();
+                }
+
                 form.reset();
                 submitBtn.innerHTML = btnOriginalText;
                 submitBtn.disabled = false;
@@ -353,11 +448,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 // Show success message
                 formMsg.classList.remove('hidden');
 
-                // Hide message after 5 seconds
                 setTimeout(() => {
                     formMsg.classList.add('hidden');
                 }, 5000);
-            }, 1500);
+            }, 1000);
         });
     }
 

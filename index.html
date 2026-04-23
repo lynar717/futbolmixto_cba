@@ -162,6 +162,21 @@
                 </form>
             </div>
 
+            <div id="admin-waitlist-container" class="box-glow" style="display: none; flex-basis: 100%; margin-top: 30px;">
+                <div class="section-heading" style="text-align: left; margin-bottom: 15px;">
+                    <h2 style="color: var(--accent-purple);">Lista de Espera <span style="font-size:1rem; opacity:0.7;">(Administrador)</span></h2>
+                    <p>Jugadores inscriptos. Estos datos se guardan solo en este dispositivo.</p>
+                    <div style="margin-top: 15px; display: flex; gap: 10px; flex-wrap: wrap;">
+                        <button class="btn-primary-outline btn-sm" onclick="window.addManualUser()"><i class="fas fa-plus"></i> Añadir Inscripto</button>
+                        <button class="btn-primary-outline btn-sm" onclick="clearWaitlist()" style="color:#f44336; border-color:#f44336;"><i class="fas fa-trash"></i> Vaciar</button>
+                        <button class="btn-primary-outline btn-sm" onclick="downloadWaitlistCSV()"><i class="fas fa-download"></i> Bajar Excel</button>
+                    </div>
+                </div>
+                <div id="admin-waitlist-list" style="margin-top:10px; max-height:250px; overflow-y:auto; padding-right:10px;">
+                    <!-- Se llena con JS -->
+                </div>
+            </div>
+
             <div class="contact-info-wrapper">
                 <h3>CONTACTO DIRECTO</h3>
                 <p>Si tienes alguna duda o querés anotar a tu equipo completo, hablanos directamente:</p>
