@@ -377,6 +377,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     <div>
                         <strong style="font-size:1.1rem; color: #fff;">${user.nombre}</strong> <span style="color:var(--text-muted); font-size:0.8rem; margin-left:5px;">(${user.date})</span><br>
                         <i class="fab fa-whatsapp" style="color:#25D366; margin-right:5px; margin-top:5px;"></i> ${user.telefono} <br>
+                        <span style="font-size:0.9rem; color:var(--accent-blue); display:inline-block; margin-top:3px; margin-right:10px;"><i class="far fa-clock"></i> ${user.daytime || 'Sin especificar'}</span>
                         ${user.pos ? `<span style="font-size:0.9rem; color:var(--accent-purple); display:inline-block; margin-top:3px;"><i class="fas fa-shoe-prints"></i> ${user.pos}</span>` : ''}
                     </div>
                     <button class="btn-primary-outline btn-sm" style="color:#f44336; border-color:#f44336; padding:8px 12px; margin-left:10px;" onclick="window.removeWaitlistUser(${index})" title="Eliminar"><i class="fas fa-trash"></i></button>
@@ -392,9 +393,10 @@ document.addEventListener('DOMContentLoaded', () => {
         const nombre = prompt('Ingresá el nombre y apellido del jugador:');
         if (!nombre) return;
         const telefono = prompt('Ingresá su teléfono (opcional):') || '-';
+        const daytime = prompt('Ingresá Día y Hora que quiere jugar (ej: Jueves 21)');
         const pos = prompt('Ingresá su posición (opcional):') || '-';
         
-        waitlistData.push({ nombre, telefono, pos, date: new Date().toLocaleDateString() + ' (Manual)' });
+        waitlistData.push({ nombre, telefono, pos, daytime: daytime || 'Sin especificar', date: new Date().toLocaleDateString() + ' (Manual)' });
         localStorage.setItem('futbolMixtoWaitlist', JSON.stringify(waitlistData));
         window.renderWaitlist();
     };
@@ -419,9 +421,9 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
         let csvContent = "data:text/csv;charset=utf-8,";
-        csvContent += "Nombre,Telefono,Posicion,Fecha\n";
+        csvContent += "Nombre,Telefono,DiaHora,Posicion,Fecha\n";
         waitlistData.forEach(row => {
-            const rowStr = `"${row.nombre}","${row.telefono}","${row.pos}","${row.date}"`;
+            const rowStr = `"${row.nombre}","${row.telefono}","${row.daytime || ''}","${row.pos}","${row.date}"`;
             csvContent += rowStr + "\n";
         });
         const encodedUri = encodeURI(csvContent);
@@ -438,6 +440,7 @@ document.addEventListener('DOMContentLoaded', () => {
             e.preventDefault();
 
             const nombre = document.getElementById('name').value;
+            const daytime = document.getElementById('daytime').value;
             const telefono = document.getElementById('phone').value;
             const pos = document.getElementById('pos').value;
 
@@ -448,7 +451,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             setTimeout(() => {
                 // Guardar en LocalStorage
-                waitlistData.push({ nombre, telefono, pos, date: new Date().toLocaleDateString() });
+                waitlistData.push({ nombre, telefono, pos, daytime, date: new Date().toLocaleDateString() });
                 localStorage.setItem('futbolMixtoWaitlist', JSON.stringify(waitlistData));
                 
                 if (isAdminMode && window.renderWaitlist) {
