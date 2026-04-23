@@ -88,7 +88,14 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     ];
 
-    let calendarData = JSON.parse(localStorage.getItem('futbolMixtoCalendar')) || defaultCalendarData;
+    let calendarData;
+    try {
+        const storedCal = localStorage.getItem('futbolMixtoCalendar');
+        calendarData = storedCal ? JSON.parse(storedCal) : defaultCalendarData;
+    } catch (e) {
+        console.error("Error leyendo calendario local:", e);
+        calendarData = defaultCalendarData;
+    }
     let isAdminMode = false;
 
     const calendarGrid = document.getElementById('calendar-grid');
@@ -345,7 +352,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const formMsg = document.getElementById('form-msg');
     const submitBtn = form.querySelector('.submit-btn');
 
-    let waitlistData = JSON.parse(localStorage.getItem('futbolMixtoWaitlist')) || [];
+    let waitlistData = [];
+    try {
+        const storedWaitlist = localStorage.getItem('futbolMixtoWaitlist');
+        if (storedWaitlist) waitlistData = JSON.parse(storedWaitlist);
+    } catch (e) {
+        console.error("Error leyendo lista de espera local:", e);
+        waitlistData = [];
+    }
 
     window.renderWaitlist = function() {
         const listDiv = document.getElementById('admin-waitlist-list');
