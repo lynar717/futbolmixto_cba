@@ -137,8 +137,12 @@ section {
     padding: 10px 20px;
     border: 2px solid var(--accent-blue);
     color: #fff;
+    background: transparent;
     border-radius: 50px;
     font-weight: 600;
+    cursor: pointer;
+    font-family: inherit;
+    transition: all 0.3s ease;
 }
 .btn-primary-outline:hover {
     background: var(--accent-blue);
