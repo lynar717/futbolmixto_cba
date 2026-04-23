@@ -449,15 +449,15 @@ document.addEventListener('DOMContentLoaded', () => {
             alert('La lista está vacía.');
             return;
         }
-        let csvContent = "data:text/csv;charset=utf-8,";
-        csvContent += "Nombre,Telefono,DiaHora,Posicion,Fecha\n";
+        let csvContent = "Nombre;Telefono;DiaHora;Posicion;Fecha\n";
         waitlistData.forEach(row => {
-            const rowStr = `"${row.nombre}","${row.telefono}","${row.daytime || ''}","${row.pos}","${row.date}"`;
+            const rowStr = `"${row.nombre}";"${row.telefono}";"${row.daytime || ''}";"${row.pos}";"${row.date}"`;
             csvContent += rowStr + "\n";
         });
-        const encodedUri = encodeURI(csvContent);
+        const blob = new Blob(["\uFEFF" + csvContent], { type: 'text/csv;charset=utf-8;' });
+        const url = URL.createObjectURL(blob);
         const link = document.createElement("a");
-        link.setAttribute("href", encodedUri);
+        link.setAttribute("href", url);
         link.setAttribute("download", "lista_espera_futbol_mixto.csv");
         document.body.appendChild(link);
         link.click();
