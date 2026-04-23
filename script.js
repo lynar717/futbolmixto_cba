@@ -205,7 +205,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     window.removeMatchSlot = function (dayIndex, matchIndex) {
         if (!isAdminMode) return;
-        if (confirm(\`¿Eliminar horario de \${calendarData[dayIndex].matches[matchIndex].time} hs?\`)) {
+        if (confirm(`¿Eliminar horario de ${calendarData[dayIndex].matches[matchIndex].time} hs?`)) {
             calendarData[dayIndex].matches.splice(matchIndex, 1);
             saveCalendarData();
             renderCalendar();
@@ -245,7 +245,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     window.removeDay = function (dayIndex) {
         if (!isAdminMode) return;
-        if (confirm(\`¿Estás seguro de eliminar el día \${calendarData[dayIndex].day} por completo?\`)) {
+        if (confirm(`¿Estás seguro de eliminar el día ${calendarData[dayIndex].day} por completo?`)) {
             calendarData.splice(dayIndex, 1);
             saveCalendarData();
             renderCalendar();
