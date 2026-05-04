@@ -233,47 +233,145 @@ section {
 }
 
 /* ==========================================================================
-   Hero Section
+   Hero Section (Split Layout)
    ========================================================================== */
 .hero {
     position: relative;
     height: 100vh;
-    min-height: 600px;
+    min-height: 750px;
     display: flex;
     align-items: center;
-    justify-content: center;
-    text-align: center;
-    background: url('assets/img/hero_bg_1776541977667.png') center center/cover no-repeat;
+    background: var(--bg-dark);
     padding: 0;
+    overflow: hidden;
 }
-.hero-overlay {
+.hero-bg-pattern {
     position: absolute;
     top: 0; left: 0; width: 100%; height: 100%;
-    background: linear-gradient(to bottom, rgba(7,7,7,0.4) 0%, rgba(7,7,7,0.9) 100%);
-    z-index: 1;
+    background-image: radial-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+    background-size: 40px 40px;
+    z-index: 0;
 }
-.hero-content {
+.hero-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    gap: 40px;
     position: relative;
     z-index: 2;
-    max-width: 800px;
-    padding: 0 20px;
+    width: 100%;
+}
+.hero-content {
+    text-align: left;
+    max-width: 600px;
+    padding-top: 50px;
+}
+.hero-badge {
+    display: inline-block;
+    padding: 8px 16px;
+    background: rgba(157, 78, 221, 0.15);
+    border: 1px solid var(--accent-purple);
+    color: #e0b0ff;
+    border-radius: 30px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    margin-bottom: 25px;
+    letter-spacing: 1px;
+    box-shadow: 0 0 15px rgba(157, 78, 221, 0.2);
 }
 .hero-title {
-    font-size: 5rem;
-    line-height: 1.1;
+    font-size: 4.8rem;
+    line-height: 1.05;
     margin-bottom: 20px;
     text-transform: uppercase;
-    text-shadow: 0 4px 20px rgba(0,0,0,0.8);
+    text-shadow: 0 4px 10px rgba(0,0,0,0.5);
 }
 .hero-subtitle {
-    font-size: 1.2rem;
+    font-size: 1.15rem;
     font-weight: 300;
     margin-bottom: 40px;
     color: #dedede;
+    line-height: 1.6;
+}
+.hero-actions {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 15px;
 }
 .hero-actions .btn-primary i {
     margin-right: 8px;
     font-size: 1.2rem;
+}
+.hero-btn-secondary {
+    padding: 13px 30px;
+}
+
+/* Hero Visual */
+.hero-visual {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.visual-wrapper {
+    position: relative;
+    width: 100%;
+    max-width: 500px;
+    aspect-ratio: 3/4;
+}
+.img-glow-backdrop {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 90%; height: 90%;
+    background: radial-gradient(circle, var(--accent-blue-glow) 0%, transparent 60%);
+    filter: blur(50px);
+    z-index: 0;
+}
+.hero-main-img {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 20px;
+    border: 1px solid rgba(255,255,255,0.05);
+    box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+    -webkit-mask-image: linear-gradient(to bottom, black 70%, transparent 100%);
+    mask-image: linear-gradient(to bottom, black 70%, transparent 100%);
+}
+.visual-card-floating {
+    position: absolute;
+    background: rgba(18, 18, 18, 0.75);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255,255,255,0.1);
+    padding: 12px 20px;
+    border-radius: 12px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    animation: float 5s ease-in-out infinite;
+}
+.card-1 {
+    top: 15%;
+    right: -30px;
+    animation-delay: 0s;
+}
+.card-2 {
+    bottom: 25%;
+    left: -20px;
+    animation-delay: 2.5s;
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-15px); }
 }
 .scroll-down {
     position: absolute;
@@ -302,11 +400,16 @@ section {
     gap: 30px;
 }
 .dia-card {
-    background: var(--bg-lighter);
-    padding: 40px 30px;
-    border-radius: 20px;
-    text-align: center;
-    border: 1px solid var(--border-color);
+    background: rgba(30, 30, 30, 0.4);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    padding: 35px 30px;
+    border-radius: 16px;
+    text-align: left;
+    border: 1px solid rgba(255,255,255,0.05);
+    border-top: 1px solid rgba(255,255,255,0.1);
+    border-left: 1px solid rgba(255,255,255,0.1);
+    box-shadow: 0 15px 35px rgba(0,0,0,0.4);
     transition: transform 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease;
     animation: fadeInUp 0.6s ease forwards;
     animation-delay: calc(var(--delay) * 0.1s);
@@ -323,18 +426,21 @@ section {
 .dia-card:hover {
     transform: translateY(-10px);
     border-color: var(--accent-purple);
-    box-shadow: 0 10px 30px rgba(157, 78, 221, 0.15);
+    box-shadow: 0 10px 30px rgba(157, 78, 221, 0.2);
 }
 .dia-icon {
-    font-size: 3rem;
+    font-size: 2.5rem;
     margin-bottom: 20px;
-    background: var(--gradient-primary);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+    display: inline-block;
+    padding: 15px;
+    background: rgba(157, 78, 221, 0.1);
+    border-radius: 12px;
+    color: var(--accent-blue);
 }
 .dia-card h3 {
-    font-size: 2rem;
+    font-size: 2.2rem;
     margin-bottom: 15px;
+    letter-spacing: 1px;
 }
 .dia-card p {
     color: var(--text-muted);
@@ -384,60 +490,6 @@ section {
     margin-top: 15px;
 }
 
-/* ==========================================================================
-   Torneos y Logros (Stories Style)
-   ========================================================================== */
-.stories-container {
-    display: flex;
-    justify-content: center;
-    gap: 60px;
-    flex-wrap: wrap;
-}
-.story-item {
-    text-align: center;
-    cursor: pointer;
-}
-.story-ring {
-    width: 250px;
-    height: 250px;
-    border-radius: 50%;
-    padding: 5px;
-    background: var(--border-color);
-    margin-bottom: 20px;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-.story-ring.gold-ring { background: var(--gradient-gold); animation: pulseGold 3s infinite;}
-.story-ring.silver-ring { background: var(--gradient-silver); animation: pulseSilver 3s infinite; animation-delay: 1.5s;}
-
-@keyframes pulseGold {
-    0% { box-shadow: 0 0 0 0 rgba(212, 175, 55, 0.4); }
-    70% { box-shadow: 0 0 0 20px rgba(212, 175, 55, 0); }
-    100% { box-shadow: 0 0 0 0 rgba(212, 175, 55, 0); }
-}
-@keyframes pulseSilver {
-    0% { box-shadow: 0 0 0 0 rgba(176, 196, 222, 0.4); }
-    70% { box-shadow: 0 0 0 20px rgba(176, 196, 222, 0); }
-    100% { box-shadow: 0 0 0 0 rgba(176, 196, 222, 0); }
-}
-
-.story-ring:hover { transform: scale(1.05); }
-
-.story-img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    border-radius: 50%;
-    border: 4px solid var(--bg-dark);
-}
-.story-item h4 {
-    font-size: 1.8rem;
-    margin-bottom: 5px;
-}
-.story-item span {
-    font-size: 0.9rem;
-    color: var(--text-muted);
-    font-weight: 300;
-}
 
 /* ==========================================================================
    Propuesta de Valor
@@ -729,7 +781,17 @@ footer {
     .contact-container {
         grid-template-columns: 1fr;
     }
+    .hero-container {
+        grid-template-columns: 1fr;
+        text-align: center;
+        gap: 20px;
+    }
+    .hero-content {
+        text-align: center;
+        padding-top: 80px;
+    }
     .hero-title { font-size: 3.5rem; }
+    .hero-actions { justify-content: center; }
 }
 
 @media (max-width: 768px) {
